@@ -17,6 +17,7 @@ if (File("./private/").exists()) {
     include(":private:store")
     include(":private:compatability")
     include(":private:mineplex")
+    include(":private:tutorial")
 }
 
 pluginManagement {
@@ -145,3 +146,5 @@ dependencyResolutionManagement {
 }
 include("private:mineplex")
 findProject(":private:mineplex")?.name = "mineplex"
+include("private:tutorial")
+findProject(":private:tutorial")?.name = "tutorial"
