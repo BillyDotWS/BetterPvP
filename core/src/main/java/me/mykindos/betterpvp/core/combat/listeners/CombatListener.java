@@ -22,6 +22,7 @@ import me.mykindos.betterpvp.core.combat.events.PreDamageEvent;
 import me.mykindos.betterpvp.core.combat.events.VelocityType;
 import me.mykindos.betterpvp.core.effects.EffectManager;
 import me.mykindos.betterpvp.core.effects.EffectTypes;
+import me.mykindos.betterpvp.core.framework.CoreNamespaceKeys;
 import me.mykindos.betterpvp.core.framework.updater.UpdateEvent;
 import me.mykindos.betterpvp.core.listener.BPvPListener;
 import me.mykindos.betterpvp.core.utilities.UtilDamage;
@@ -171,7 +172,7 @@ public class CombatListener implements Listener {
 
         CustomDamageReductionEvent customDamageReductionEvent = null;
         if (event instanceof CustomDamageEvent cde) {
-            if (cde.isKnockback() && cde.getDamager() != null) {
+            if (cde.isKnockback() && cde.getDamager() != null && !cde.getDamagee().getPersistentDataContainer().has(CoreNamespaceKeys.NO_KNOCKBACK)) {
                 CustomKnockbackEvent cke = UtilServer.callEvent(new CustomKnockbackEvent(cde.getDamagee(), cde.getDamager(), cde.getDamage(), cde));
                 if (!cke.isCancelled()) {
                     applyKB(cke);
@@ -309,7 +310,7 @@ public class CombatListener implements Listener {
             return;
         }
 
-        if (UtilPlayer.isCreativeOrSpectator(de.getDamagee())) {
+        if (de.getDamagee().isInvulnerable() || UtilPlayer.isCreativeOrSpectator(de.getDamagee())) {
             event.setCancelled(true);
             return;
         }

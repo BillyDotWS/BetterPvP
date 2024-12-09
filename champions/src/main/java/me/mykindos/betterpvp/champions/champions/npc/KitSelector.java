@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Zombie;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -31,6 +32,7 @@ public final class KitSelector {
         this.spawned = true;
 
         final Entity entity = location.getWorld().spawn(location, Zombie.class, zombie -> {
+            zombie.setAI(false);
             Bukkit.getMobGoals().removeAllGoals(zombie);
             zombie.setShouldBurnInDay(false);
             zombie.setAggressive(false);
@@ -38,15 +40,21 @@ public final class KitSelector {
             zombie.setAware(false);
             zombie.setGravity(false);
             zombie.setSilent(true);
-            zombie.setConversionTime(Integer.MAX_VALUE);
+            zombie.setConversionTime(-Integer.MAX_VALUE);
             zombie.setNoPhysics(true);
             zombie.setCanPickupItems(false);
             zombie.setCanBreakDoors(false);
             zombie.lockFreezeTicks(true);
             zombie.setVisualFire(false);
+            zombie.setAdult();
+            zombie.setPersistent(false);
             zombie.setCustomNameVisible(true);
             zombie.customName(Component.text(role.getName(), role.getColor()));
-            zombie.setAI(false);
+
+            zombie.getEquipment().setHelmet(new ItemStack(role.getHelmet()));
+            zombie.getEquipment().setChestplate(new ItemStack(role.getChestplate()));
+            zombie.getEquipment().setLeggings(new ItemStack(role.getLeggings()));
+            zombie.getEquipment().setBoots(new ItemStack(role.getBoots()));
         });
 
         // register
